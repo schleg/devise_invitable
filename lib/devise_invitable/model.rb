@@ -47,6 +47,8 @@ module Devise
       def invite!
         @skip_password = true
         self.skip_confirmation! if self.new_record? && self.respond_to?(:skip_confirmation!)
+        self.invited_by_type! if self.respond_to?(:invited_by_type!)
+        self.invited_by_id! if self.respond_to?(:invited_by_id!)
         generate_invitation_token if self.invitation_token.nil?
         self.invitation_sent_at = Time.now.utc
         if save(:validate => self.class.validate_on_invite)
